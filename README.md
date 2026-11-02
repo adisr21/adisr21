@@ -17,8 +17,9 @@ Build the static website with `npm run build`. Output is written to `dist/`.
 ## Content and identity
 
 - `src/consts.ts`: site identity, description, and GitHub contact link.
-- `src/pages/index.astro`: homepage and featured portfolio project.
+- `src/pages/index.astro`: homepage and portfolio project cards.
 - `src/pages/work/optik-siliwangi.astro`: project case study, grounded in the supplied screenshots and project documentation.
+- `src/pages/work/order-system.astro`: wholesale spare-parts ordering case study, using the supplied Libra Jaya screenshots and verified application features.
 - `src/pages/about.astro`: editable professional introduction.
 - `src/content/blog/`: journal articles. Add a Markdown or MDX file with the frontmatter below.
 - `src/content/examples/`: preserved Astro starter examples, outside the blog collection.
