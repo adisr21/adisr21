@@ -1,24 +1,48 @@
 ---
+import { localizePath, languageNames, type Alternates, i18n } from '../i18n';
 import Icon from './Icon.astro';
 import { PROFILE } from '../consts';
-const path = Astro.url.pathname;
+const { lang, t, href } = i18n(Astro.url.pathname);
+interface Props { alternates?: Alternates; }
+const path = localizePath(Astro.url.pathname, 'en');
+const { alternates } = Astro.props;
+const languageLinks = (['id', 'en'] as const).map((locale) => ({
+  locale,
+  available: !alternates || Boolean(alternates[locale]),
+  path: alternates ? (alternates[locale] ?? localizePath('/blog/', locale)) : localizePath(Astro.url.pathname, locale),
+}));
 ---
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">{t("Skip to content")}</a>
 <header class="container site-header">
-  <a class="brand" href="/" aria-label="adisr home"><span class="brand-mark" aria-hidden="true">✳</span> adisr<span class="brand-dot">.</span></a>
-  <nav aria-label="Main navigation">
-    <a href="/#work" aria-current={path.startsWith('/work') ? 'page' : undefined}>Work</a>
-    <a href="/blog/" aria-current={path.startsWith('/blog') ? 'page' : undefined}>Writing</a>
-    <a href="/about/" aria-current={path.startsWith('/about') ? 'page' : undefined}>About</a>
+  <a class="brand" href={href("/")} aria-label={t("adisr home")}><span class="brand-mark" aria-hidden="true">✳</span> adisr<span class="brand-dot">.</span></a>
+  <nav class="main-navigation" aria-label={t("Main navigation")}>
+    <a href={href("/#work")} aria-current={path.startsWith('/work') ? 'page' : undefined}>{t("Work")}</a>
+    <a href={href("/blog/")} aria-current={path.startsWith('/blog') ? 'page' : undefined}>{t("Writing")}</a>
+    <a href={href("/about/")} aria-current={path.startsWith('/about') ? 'page' : undefined}>{t("About")}</a>
   </nav>
   <div class="header-actions">
-    <button class="theme-toggle" aria-label="Switch to dark theme" title="Switch theme"><span class="sun"><Icon name="sun" size={17}/></span><span class="moon"><Icon name="moon" size={17}/></span></button>
-    <a class="connect" href={PROFILE.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Chat with Adi on WhatsApp"><Icon name="message" size={17}/><span class="connect-text">WhatsApp</span></a>
+    <nav class="language-switch" aria-label={t("Language")}>
+      {languageLinks.map(({ locale, path, available }) => <a href={path} lang={locale} hreflang={locale} data-language-link data-translation-available={available} aria-current={lang === locale ? 'true' : undefined} aria-label={languageNames[locale]} title={available ? languageNames[locale] : `${languageNames[locale]}: ${t("Translation unavailable — browse the journal")}`}>{locale.toUpperCase()}</a>)}
+    </nav>
+    <button class="theme-toggle" data-dark-label={t("Switch to dark theme")} data-light-label={t("Switch to light theme")} aria-label={t("Switch to dark theme")} title={t("Switch theme")}><span class="sun"><Icon name="sun" size={17}/></span><span class="moon"><Icon name="moon" size={17}/></span></button>
+    <a class="connect" href={PROFILE.whatsapp} target="_blank" rel="noopener noreferrer" aria-label={t("Chat with Adi on WhatsApp")}><Icon name="message" size={17}/><span class="connect-text">WhatsApp</span></a>
   </div>
 </header>
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
-  const syncLabel = () => toggle?.setAttribute('aria-label', `Switch to ${document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'} theme`);
+  const syncLabel = () => {
+    const label = document.documentElement.dataset.theme === 'dark' ? toggle?.dataset.lightLabel : toggle?.dataset.darkLabel;
+    if (label) toggle?.setAttribute('aria-label', label);
+  };
+  document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach(link => {
+    if (link.dataset.translationAvailable === 'true') {
+      const url = new URL(link.href);
+      url.search = location.search;
+      // Article heading IDs may differ between translations.
+      if (!location.pathname.includes('/blog/')) url.hash = location.hash;
+      link.href = url.href;
+    }
+  });
   syncLabel();
   toggle?.addEventListener('click', () => {
     const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -28,11 +52,14 @@ const path = Astro.url.pathname;
   });
 </script>
 <style>
- .site-header{height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:24px}.brand{display:flex;align-items:center;font:600 29px/1 var(--font-display);letter-spacing:-1.7px;gap:7px}.brand-mark{font-size:40px;color:var(--accent);margin-right:5px;font-weight:400}.brand-dot{margin-left:-9px;color:var(--accent)}nav{display:flex;gap:35px;margin-left:80px}nav a{font-size:13px;color:var(--muted);padding-block:12px}nav a:hover,nav a[aria-current]{color:var(--ink)}nav a[aria-current]{text-decoration:underline;text-underline-offset:8px;text-decoration-color:var(--accent)}.header-actions{display:flex;align-items:center;gap:25px}.theme-toggle{width:36px;height:36px;background:transparent;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%}.theme-toggle span{display:flex}.moon{display:none!important}:global([data-theme=dark]) .sun{display:none!important}:global([data-theme=dark]) .moon{display:flex!important}.connect{display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600}.connect:hover{color:var(--accent)}
- @media(max-width:800px){.site-header{height:84px}nav{margin-left:0;gap:24px}.header-actions{gap:12px}.connect{display:grid;place-items:center;width:36px;height:36px;padding:0}.connect-text{display:none}}
- @media(max-width:480px){.site-header{gap:12px}nav{gap:18px}.brand{font-size:24px}.brand-mark{font-size:30px}nav a{font-size:12px}}
+ .site-header{height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:24px}.brand{display:flex;align-items:center;font:600 29px/1 var(--font-display);letter-spacing:-1.7px;gap:7px}.brand-mark{font-size:40px;color:var(--accent);margin-right:5px;font-weight:400}.brand-dot{margin-left:-9px;color:var(--accent)}.main-navigation{display:flex;gap:35px;margin-left:80px}.main-navigation a{font-size:13px;color:var(--muted);padding-block:12px}.main-navigation a:hover,.main-navigation a[aria-current]{color:var(--ink)}.main-navigation a[aria-current]{text-decoration:underline;text-underline-offset:8px;text-decoration-color:var(--accent)}.header-actions{display:flex;align-items:center;gap:25px}.theme-toggle{width:36px;height:36px;background:transparent;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%}.theme-toggle span{display:flex}.moon{display:none!important}:global([data-theme=dark]) .sun{display:none!important}:global([data-theme=dark]) .moon{display:flex!important}.connect{display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600}.connect:hover{color:var(--accent)}
+ @media(max-width:800px){.site-header{height:84px}.main-navigation{margin-left:0;gap:24px}.header-actions{gap:12px}.connect{display:grid;place-items:center;width:36px;height:36px;padding:0}.connect-text{display:none}}
+ @media(max-width:480px){.site-header{gap:12px}.main-navigation{gap:18px}.brand{font-size:24px}.brand-mark{font-size:30px}.main-navigation a{font-size:12px}}
 .connect{border:1px solid var(--line);border-radius:4px;padding:9px 13px}.connect:hover{border-color:var(--accent)}
  @media(max-width:800px){.connect{padding:0}}
- @media(max-width:480px){.site-header{gap:8px}nav{gap:12px}.header-actions{gap:8px}}
+ @media(max-width:480px){.site-header{gap:8px}.main-navigation{gap:12px}.header-actions{gap:8px}}
  @media(max-width:360px){.brand-mark{display:none}}
+ .language-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:5px}.language-switch a{display:grid;place-items:center;min-width:29px;min-height:28px;font-size:10px;color:var(--muted);border-radius:3px}.language-switch a[aria-current]{background:var(--ink);color:var(--paper)}.language-switch a:hover{color:var(--accent)}.header-actions{gap:16px}.main-navigation{margin-left:0}
+ @media(max-width:800px){.site-header{height:auto;min-height:105px;display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding-top:17px;padding-bottom:8px}.main-navigation{grid-column:1/-1;grid-row:2;justify-content:center;gap:35px}.main-navigation a{padding:7px 0}.header-actions{grid-column:2;grid-row:1;gap:10px}.brand{grid-column:1;grid-row:1}}
+ @media(max-width:480px){.header-actions{gap:7px}.language-switch a{min-width:25px}.theme-toggle,.connect{width:32px;height:32px}.brand{font-size:25px}.brand-mark{font-size:31px}.site-header{gap:8px}}
 </style>

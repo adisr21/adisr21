@@ -1,24 +1,26 @@
 ---
-import {getCollection} from 'astro:content';
+import { i18n } from '../../i18n';
+import { postsForLocale } from '../../lib/blog';
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Icon from '../../components/Icon.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-const posts=(await getCollection('blog')).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
-const categories=['All notes','Engineering','Product thinking','Building in public'];
+const { lang, t, href } = i18n(Astro.url.pathname);
+const posts=await postsForLocale(lang);
+const categories=['All notes','Engineering','Product thinking','Building in public'] as const;
 ---
-<!doctype html><html lang="en"><head><BaseHead title="The journal — adisr." description="Thoughtful notes on software engineering, product decisions, and the process of building useful things."/></head><body><Header/>
+<!doctype html><html lang={lang}><head><BaseHead title={t("The journal — adisr.")} description={t("Thoughtful notes on software engineering, product decisions, and the process of building useful things.")}/></head><body><Header/>
 <main id="main" class="container">
- <section class="page-intro"><div class="eyebrow">The journal / ideas in progress</div><h1>Learn. Build.<br/><span>Put it into words.</span></h1><div class="intro-bottom"><p>Practical notes, considered opinions, and a closer look at the decisions behind the work.</p><a href="/rss.xml" class="text-link">Follow via RSS <Icon name="arrow-up-right" size={15}/></a></div></section>
- <section class="journal-content" aria-label="Browse articles">
-  <div class="journal-tools"><div class="filters" role="group" aria-label="Filter articles by topic">{categories.map((category,index)=><button class:list={['filter',{selected:index===0}]} data-filter={category} aria-pressed={index===0}>{category}</button>)}</div><label class="search"><Icon name="search" size={16}/><span class="sr-only">Search articles</span><input type="search" placeholder="Find a thought…" id="article-search"/></label></div>
-  <div class="results-bar"><span id="result-count" role="status" aria-live="polite">{posts.length} notes</span><span>Editorial drafts are marked for review.</span></div>
+ <section class="page-intro"><div class="eyebrow">{t("The journal / ideas in progress")}</div><h1>{t("Learn. Build.")}<br/><span>{t("Put it into words.")}</span></h1><div class="intro-bottom"><p>{t("Practical notes, considered opinions, and a closer look at the decisions behind the work.")}</p><a href={href("/rss.xml")} class="text-link">{t("Follow via RSS")} <Icon name="arrow-up-right" size={15}/></a></div></section>
+ <section class="journal-content" aria-label={t("Browse articles")}>
+  <div class="journal-tools"><div class="filters" role="group" aria-label={t("Filter articles by topic")}>{categories.map((category,index)=><button class:list={['filter',{selected:index===0}]} data-filter={category} aria-pressed={index===0}>{t(category)}</button>)}</div><label class="search"><Icon name="search" size={16}/><span class="sr-only">{t("Search articles")}</span><input type="search" placeholder={t("Find a thought…")} id="article-search"/></label></div>
+  <div class="results-bar"><span id="result-count" data-singular={t("note")} data-plural={t("notes")} role="status" aria-live="polite">{posts.length} {t(posts.length === 1 ? "note" : "notes")}</span><span>{t(posts.some(post => post.data.draft) ? "Editorial drafts are marked for review." : "Notes on software, products, and building.")}</span></div>
   <div class="article-grid">{posts.map((post,index)=><ArticleCard post={post} index={index}/>)}</div>
-  <div class="empty-state" hidden><span aria-hidden="true">↳</span><h2>No notes found.</h2><p>Try another topic or a different search.</p><button class="button secondary" id="reset-search">Clear filters <Icon name="arrow-right" size={16}/></button></div>
-  <noscript><p class="noscript-note">All notes are shown below. Search and topic filtering are available with JavaScript enabled.</p></noscript>
+  <div class="empty-state" hidden={posts.length > 0}><span aria-hidden="true">↳</span><h2>{t("No notes found.")}</h2><p>{t("Try another topic or a different search.")}</p><button class="button secondary" id="reset-search">{t("Clear filters")} <Icon name="arrow-right" size={16}/></button></div>
+  <noscript><p class="noscript-note">{t("All notes are shown below. Search and topic filtering are available with JavaScript enabled.")}</p></noscript>
  </section>
- <aside class="journal-end"><span class="eyebrow">A growing collection</span><p>Ideas get better when they’re shared.<br/>More notes as the work unfolds.</p><a href="/#work" class="text-link">See what I’m building <Icon name="arrow-up-right" size={16}/></a></aside>
+ <aside class="journal-end"><span class="eyebrow">{t("A growing collection")}</span><p>{t("Ideas get better when they’re shared.")}<br/>{t("More notes as the work unfolds.")}</p><a href={href("/#work")} class="text-link">{t("See what I’m building")} <Icon name="arrow-up-right" size={16}/></a></aside>
 </main><Footer/></body></html>
 <script>
  const search=document.querySelector<HTMLInputElement>('#article-search')!;
@@ -28,7 +30,8 @@ const categories=['All notes','Engineering','Product thinking','Building in publ
  function filter(){
   const query=search.value.trim().toLowerCase();let count=0;
   cards.forEach(card=>{const visible=(category==='All notes'||card.dataset.category===category)&&(!query||card.dataset.search?.includes(query));card.hidden=!visible;if(visible)count++;});
-  document.querySelector('#result-count')!.textContent=`${count} ${count===1?'note':'notes'}`;
+  const result=document.querySelector<HTMLElement>('#result-count')!;
+  result.textContent=`${count} ${count===1?result.dataset.singular:result.dataset.plural}`;
   document.querySelector<HTMLElement>('.empty-state')!.hidden=count>0;
   buttons.forEach(button=>{const active=button.dataset.filter===category;button.setAttribute('aria-pressed',String(active));button.classList.toggle('selected',active);});
  }

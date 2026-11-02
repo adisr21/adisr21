@@ -1,4 +1,6 @@
 ---
+lang: en
+translationKey: clarity-before-complexity
 title: 'Clarity is a product feature'
 description: 'Why naming, status, and a well-chosen next step can matter as much as another feature.'
 pubDate: '2026-11-01'

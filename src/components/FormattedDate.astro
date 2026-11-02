@@ -1,4 +1,6 @@
 ---
+import { getLocale } from '../i18n';
+const lang = getLocale(Astro.url.pathname);
 interface Props {
 	date: Date;
 }
@@ -7,7 +9,8 @@ const { date } = Astro.props;
 ---
 
 <time datetime={date.toISOString()}>
-	{date.toLocaleDateString('en-us', {
+	{date.toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
+		timeZone: 'UTC',
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',

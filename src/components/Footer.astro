@@ -1,10 +1,12 @@
 ---
+import { i18n } from '../i18n';
 import Icon from './Icon.astro';
 import { PROFILE } from '../consts';
----
+
+const { t, href } = i18n(Astro.url.pathname);---
 <footer class="container">
- <div class="footer-top"><a class="footer-brand" href="/">adisr<span>.</span></a><p>Built with intention. Always a work in progress.</p><a href="#" class="back-top">Back to top <span aria-hidden="true">↑</span></a></div>
- <div class="footer-bottom"><span>© {new Date().getFullYear()} Adi. Crafted on the web.</span><div><a href={PROFILE.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp <Icon name="arrow-up-right" size={12}/></a><a href={PROFILE.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrow-up-right" size={12}/></a><a href="/rss.xml">RSS feed <Icon name="arrow-up-right" size={12}/></a></div><span class="small-note">Stay curious. Keep building.</span></div>
+ <div class="footer-top"><a class="footer-brand" href={href("/")}>adisr<span>.</span></a><p>{t("Built with intention. Always a work in progress.")}</p><a href="#" class="back-top">{t("Back to top")} <span aria-hidden="true">↑</span></a></div>
+ <div class="footer-bottom"><span>© {new Date().getFullYear()} {t("Adi. Crafted on the web.")}</span><div><a href={PROFILE.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp <Icon name="arrow-up-right" size={12}/></a><a href={PROFILE.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrow-up-right" size={12}/></a><a href={href("/rss.xml")}>{t("RSS feed")} <Icon name="arrow-up-right" size={12}/></a></div><span class="small-note">{t("Stay curious. Keep building.")}</span></div>
 </footer>
 <style>
  footer{padding:38px 0 27px;border-top:1px solid var(--line)}.footer-top,.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px}.footer-brand{font:600 26px var(--font-display);letter-spacing:-1.5px}.footer-brand span{color:var(--accent)}.footer-top p{font-size:12px}.back-top{font-size:11px;color:var(--muted)}.back-top span{margin-left:14px}.footer-bottom{margin-top:28px;font-size:10px;color:var(--muted)}.footer-bottom>div{display:flex;flex-wrap:wrap;gap:24px}.footer-bottom a{display:flex;gap:7px;align-items:center}a:hover{color:var(--accent)}

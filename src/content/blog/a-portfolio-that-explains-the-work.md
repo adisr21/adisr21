@@ -1,4 +1,6 @@
 ---
+lang: en
+translationKey: a-portfolio-that-explains-the-work
 title: 'Show the thinking, not just the screen'
 description: 'A useful project story connects the problem, the trade-offs, and the finished experience.'
 pubDate: '2026-10-31'

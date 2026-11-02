@@ -1,4 +1,6 @@
 ---
+lang: en
+translationKey: designing-for-the-unhappy-path
 title: 'Good software considers the unhappy path'
 description: 'The small decisions that make an interface useful when things don’t go to plan.'
 pubDate: '2026-11-02'
