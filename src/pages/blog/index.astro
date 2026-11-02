@@ -1,0 +1,43 @@
+---
+import {getCollection} from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Icon from '../../components/Icon.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+const posts=(await getCollection('blog')).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+const categories=['All notes','Engineering','Product thinking','Building in public'];
+---
+<!doctype html><html lang="en"><head><BaseHead title="The journal — adisr." description="Thoughtful notes on software engineering, product decisions, and the process of building useful things."/></head><body><Header/>
+<main id="main" class="container">
+ <section class="page-intro"><div class="eyebrow">The journal / ideas in progress</div><h1>Learn. Build.<br/><span>Put it into words.</span></h1><div class="intro-bottom"><p>Practical notes, considered opinions, and a closer look at the decisions behind the work.</p><a href="/rss.xml" class="text-link">Follow via RSS <Icon name="arrow-up-right" size={15}/></a></div></section>
+ <section class="journal-content" aria-label="Browse articles">
+  <div class="journal-tools"><div class="filters" role="group" aria-label="Filter articles by topic">{categories.map((category,index)=><button class:list={['filter',{selected:index===0}]} data-filter={category} aria-pressed={index===0}>{category}</button>)}</div><label class="search"><Icon name="search" size={16}/><span class="sr-only">Search articles</span><input type="search" placeholder="Find a thought…" id="article-search"/></label></div>
+  <div class="results-bar"><span id="result-count" role="status" aria-live="polite">{posts.length} notes</span><span>Editorial drafts are marked for review.</span></div>
+  <div class="article-grid">{posts.map((post,index)=><ArticleCard post={post} index={index}/>)}</div>
+  <div class="empty-state" hidden><span aria-hidden="true">↳</span><h2>No notes found.</h2><p>Try another topic or a different search.</p><button class="button secondary" id="reset-search">Clear filters <Icon name="arrow-right" size={16}/></button></div>
+  <noscript><p class="noscript-note">All notes are shown below. Search and topic filtering are available with JavaScript enabled.</p></noscript>
+ </section>
+ <aside class="journal-end"><span class="eyebrow">A growing collection</span><p>Ideas get better when they’re shared.<br/>More notes as the work unfolds.</p><a href="/#work" class="text-link">See what I’m building <Icon name="arrow-up-right" size={16}/></a></aside>
+</main><Footer/></body></html>
+<script>
+ const search=document.querySelector<HTMLInputElement>('#article-search')!;
+ const buttons=document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+ const cards=document.querySelectorAll<HTMLElement>('[data-article]');
+ let category='All notes';
+ function filter(){
+  const query=search.value.trim().toLowerCase();let count=0;
+  cards.forEach(card=>{const visible=(category==='All notes'||card.dataset.category===category)&&(!query||card.dataset.search?.includes(query));card.hidden=!visible;if(visible)count++;});
+  document.querySelector('#result-count')!.textContent=`${count} ${count===1?'note':'notes'}`;
+  document.querySelector<HTMLElement>('.empty-state')!.hidden=count>0;
+  buttons.forEach(button=>{const active=button.dataset.filter===category;button.setAttribute('aria-pressed',String(active));button.classList.toggle('selected',active);});
+ }
+ search.addEventListener('input',filter);
+ buttons.forEach(button=>button.addEventListener('click',()=>{category=button.dataset.filter!;filter();}));
+ document.querySelector('#reset-search')?.addEventListener('click',()=>{search.value='';category='All notes';filter();search.focus();});
+</script>
+<style>
+ h1>span{color:var(--muted)}.intro-bottom{display:flex;justify-content:space-between;align-items:end;gap:35px}.intro-bottom p{max-width:520px}.intro-bottom .text-link{white-space:nowrap;font-size:12px}.journal-content{padding-block:40px 75px}.journal-tools{display:flex;justify-content:space-between;gap:20px;align-items:center}.filters{display:flex;flex-wrap:wrap;gap:5px}.filter{font-size:11px;background:transparent;padding:9px 14px;border-radius:3px;color:var(--muted);border:1px solid transparent}.filter:hover{border-color:var(--line)}.filter.selected{background:var(--ink);color:var(--paper)}.search{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:6px 0;color:var(--muted)}.search input{border:0;background:transparent;color:var(--ink);font-size:12px;width:160px;min-width:0;padding:8px 0}.search input:focus{outline:none}.search:focus-within{border-color:var(--accent)}.results-bar{display:flex;justify-content:space-between;margin:28px 0;font-size:10px;color:var(--muted)}.article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}.empty-state{text-align:center;padding:75px 20px;background:var(--surface)}.empty-state>span{font-size:50px;color:var(--accent)}.empty-state h2{font-size:34px;margin-block:10px}.empty-state p{font-size:14px;margin-bottom:24px}.journal-end{border-top:1px solid var(--line);padding-block:35px 65px;display:flex;align-items:center;justify-content:space-between;gap:25px}.journal-end .eyebrow{font-size:9px;color:var(--accent)}.journal-end p{font-size:14px}.journal-end .text-link{font-size:11px}.noscript-note{font-size:12px;margin-top:25px}
+ @media(max-width:900px){.journal-tools{align-items:start;flex-direction:column}.search{width:100%}.search input{width:100%}.filters{gap:3px}.filter{padding:9px 11px}.article-grid{gap:20px}.journal-end{flex-wrap:wrap}}
+ @media(max-width:650px){.intro-bottom{flex-direction:column;align-items:start;gap:20px}.article-grid{grid-template-columns:1fr;gap:40px}.results-bar{font-size:9px;gap:20px}.journal-end{align-items:start;flex-direction:column}.page-intro h1{font-size:54px}.filter{font-size:10px;padding:9px 10px}}
+</style>

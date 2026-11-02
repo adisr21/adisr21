@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { PROFILE } from '../consts';
+const path = Astro.url.pathname;
+---
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="container site-header">
+  <a class="brand" href="/" aria-label="adisr home"><span class="brand-mark" aria-hidden="true">✳</span> adisr<span class="brand-dot">.</span></a>
+  <nav aria-label="Main navigation">
+    <a href="/#work" aria-current={path.startsWith('/work') ? 'page' : undefined}>Work</a>
+    <a href="/blog/" aria-current={path.startsWith('/blog') ? 'page' : undefined}>Writing</a>
+    <a href="/about/" aria-current={path.startsWith('/about') ? 'page' : undefined}>About</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" aria-label="Switch to dark theme" title="Switch theme"><span class="sun"><Icon name="sun" size={17}/></span><span class="moon"><Icon name="moon" size={17}/></span></button>
+    <a class="connect" href={PROFILE.github} target="_blank" rel="noopener noreferrer">Let’s connect <Icon name="arrow-up-right" size={15}/></a>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  const syncLabel = () => toggle?.setAttribute('aria-label', `Switch to ${document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'} theme`);
+  syncLabel();
+  toggle?.addEventListener('click', () => {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('adisr-theme', theme); } catch {}
+    syncLabel();
+  });
+</script>
+<style>
+ .site-header{height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:24px}.brand{display:flex;align-items:center;font:600 29px/1 var(--font-display);letter-spacing:-1.7px;gap:7px}.brand-mark{font-size:40px;color:var(--accent);margin-right:5px;font-weight:400}.brand-dot{margin-left:-9px;color:var(--accent)}nav{display:flex;gap:35px;margin-left:80px}nav a{font-size:13px;color:var(--muted);padding-block:12px}nav a:hover,nav a[aria-current]{color:var(--ink)}nav a[aria-current]{text-decoration:underline;text-underline-offset:8px;text-decoration-color:var(--accent)}.header-actions{display:flex;align-items:center;gap:25px}.theme-toggle{width:36px;height:36px;background:transparent;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%}.theme-toggle span{display:flex}.moon{display:none!important}:global([data-theme=dark]) .sun{display:none!important}:global([data-theme=dark]) .moon{display:flex!important}.connect{display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600}.connect:hover{color:var(--accent)}
+ @media(max-width:800px){.site-header{height:84px}nav{margin-left:0;gap:24px}.header-actions{gap:12px}.connect{display:none}}
+ @media(max-width:480px){.site-header{gap:12px}nav{gap:18px}.brand{font-size:24px}.brand-mark{font-size:30px}nav a{font-size:12px}}
+</style>

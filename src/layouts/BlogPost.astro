@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import Icon from '../components/Icon.astro';
+type Props = CollectionEntry<'blog'>['data'] & {headings?:MarkdownHeading[]; readingTime?:number};
+const {title,description,pubDate,updatedDate,heroImage,category,draft,headings=[],readingTime=3}=Astro.props;
+const toc=headings.filter(h=>h.depth===2);
+---
+<!doctype html><html lang="en"><head><BaseHead title={`${title} — adisr.`} description={description} image={heroImage} noindex={draft}/></head><body>
+<div class="reading-progress" aria-hidden="true"></div><Header/>
+<main id="main" class="container">
+ <div class="article-heading"><a class="back-link" href="/blog/"><Icon name="arrow-left" size={15}/> Back to the journal</a><div class="eyebrow">{category}{draft&&<span class="pill">Editorial draft</span>}</div><h1>{title}</h1><p class="article-description">{description}</p><div class="byline"><span class="avatar" aria-hidden="true">a.</span><span>Adi <span class="byline-sub">Software engineer</span></span><span class="byline-date"><FormattedDate date={pubDate}/> <span>·</span> {readingTime} min read</span></div></div>
+ {heroImage&&<Image class="article-hero" src={heroImage} alt="" width={1000}/>}
+ <div class="article-body"><aside class="article-sidebar">{toc.length>0&&<nav aria-label="On this page"><div class="eyebrow">On this page</div>{toc.map(heading=><a href={`#${heading.slug}`}>{heading.text}</a>)}</nav>}<button class="share-link"><Icon name="copy" size={14}/> Copy article link</button><span class="share-status" role="status" aria-live="polite"></span></aside>
+ <article class="prose">{draft&&<div class="draft-note">An editorial draft, prepared for review. The ideas and wording may evolve before publication.</div>}<slot/>{updatedDate&&<p class="updated-date">Updated <FormattedDate date={updatedDate}/></p>}<div class="article-signoff"><span aria-hidden="true">✳</span><p>Thanks for reading.<br/><strong>Keep asking better questions.</strong></p></div><a href="/blog/" class="text-link"><Icon name="arrow-left" size={16}/> Explore more notes</a></article></div>
+</main><Footer/></body></html>
+<script>
+ const progress=document.querySelector<HTMLElement>('.reading-progress')!;
+ const article=document.querySelector<HTMLElement>('.prose')!;
+ const updateProgress=()=>{const start=article.getBoundingClientRect().top+window.scrollY;const length=Math.max(1,article.offsetHeight-window.innerHeight);progress.style.transform=`scaleX(${Math.max(0,Math.min(1,(window.scrollY-start)/length))})`;};
+ window.addEventListener('scroll',updateProgress,{passive:true});window.addEventListener('resize',updateProgress);updateProgress();
+ document.querySelector('.share-link')?.addEventListener('click',async()=>{const status=document.querySelector<HTMLElement>('.share-status')!;try{await navigator.clipboard.writeText(window.location.origin+window.location.pathname);status.textContent='Link copied.';}catch{status.textContent='Copy the link from your browser’s address bar.';}});
+</script>
+<style>
+ .reading-progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);z-index:100}.article-heading{max-width:850px;margin:50px auto 45px}.back-link{display:inline-flex;align-items:center;gap:12px;font-size:11px;color:var(--muted);margin-bottom:45px}.back-link:hover{color:var(--accent)}.article-heading>.eyebrow{color:var(--accent);font-size:10px}.article-heading .pill{font:9px var(--font-body);text-transform:none;letter-spacing:0}.article-heading h1{font-size:clamp(42px,5.5vw,68px);margin:22px 0;line-height:1.1;max-width:850px}.article-description{font-size:19px;line-height:1.7;max-width:690px}.byline{display:flex;align-items:center;gap:13px;margin-top:32px;font-size:12px}.avatar{background:var(--green);width:39px;height:39px;display:grid;place-items:center;border-radius:50%;font:500 22px var(--font-display);color:var(--ink)}.byline-sub{display:block;font-size:10px;color:var(--muted)}.byline-date{margin-left:auto;font-size:11px;color:var(--muted);display:flex;gap:12px}.article-hero{margin-inline:auto;border-radius:4px}.article-body{display:grid;grid-template-columns:220px minmax(0,700px);gap:65px;justify-content:center;border-top:1px solid var(--line);padding:48px 0 90px}.article-sidebar{font-size:12px;align-self:start;position:sticky;top:32px}.article-sidebar nav{display:flex;flex-direction:column;gap:16px}.article-sidebar .eyebrow{font-size:9px;margin-bottom:8px}.article-sidebar nav>a{font-size:11px;color:var(--muted);line-height:1.6;padding-left:12px;border-left:1px solid var(--line)}.article-sidebar nav>a:hover{color:var(--accent);border-color:var(--accent)}.share-link{background:transparent;display:flex;gap:9px;align-items:center;font-size:11px;padding:24px 0 8px}.share-link:hover{color:var(--accent)}.share-status{font-size:10px;color:var(--muted)}.draft-note{padding:15px 18px;border-left:2px solid var(--accent);background:var(--surface);font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:30px}.updated-date{font-size:12px}.article-signoff{margin-top:45px;padding:25px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:20px}.article-signoff>span{font-size:45px;color:var(--accent)}.article-signoff p{font-size:14px;margin:0}.prose>.text-link{font-size:12px;text-decoration:none}
+ @media(max-width:850px){.article-body{grid-template-columns:160px minmax(0,1fr);gap:30px}}@media(max-width:650px){.article-heading{margin-top:30px}.back-link{margin-bottom:30px}.article-heading h1{font-size:43px}.article-description{font-size:17px}.byline{flex-wrap:wrap}.byline-date{margin-left:0;width:100%;margin-top:8px}.article-body{display:flex;flex-direction:column;gap:32px;padding-top:25px}.article-sidebar{position:static;width:100%}.article-sidebar nav{display:none}.share-link{padding:0}.article-sidebar .share-status{display:block;margin-top:6px}}
+</style>

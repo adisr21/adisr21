@@ -1,64 +1,45 @@
-# Astro Starter Kit: Blog
+# adisr. — Portfolio & Journal
+
+Personal portfolio and professional engineering journal for **adisr.xyz**, built with Astro and Markdown.
+
+## Run locally
+
+Use Node 22.23.4 or newer and install dependencies with `npm ci`.
 
 ```sh
-npm create astro@latest -- --template blog
+npm run dev -- --background
+npm run astro -- dev status
+npm run astro -- dev stop
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Build the static website with `npm run build`. Output is written to `dist/`.
 
-Features:
+## Content and identity
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+- `src/consts.ts`: site identity, description, and GitHub contact link.
+- `src/pages/index.astro`: homepage and featured portfolio project.
+- `src/pages/work/optik-siliwangi.astro`: project case study, grounded in the supplied screenshots and project documentation.
+- `src/pages/about.astro`: editable professional introduction.
+- `src/content/blog/`: journal articles. Add a Markdown or MDX file with the frontmatter below.
+- `src/content/examples/`: preserved Astro starter examples, outside the blog collection.
+- `src/styles/global.css`: visual system and responsive styles.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```yaml
+---
+title: 'A clear, specific article title'
+description: 'A short description of what the reader will learn.'
+pubDate: '2026-11-02'
+category: 'Engineering'
+draft: true
+---
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Topics are `Engineering`, `Product thinking`, and `Building in public`. Articles appear in date order. Reading time and article navigation are generated from the content.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+The three initial articles are **editorial drafts for review**. Drafts are visible with a label, have `noindex` metadata, and are excluded from RSS and the sitemap. Set `draft: false` when an article is ready to publish. To keep an unpublished article entirely out of the website, move it outside `src/content/blog/`.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+Light/dark preference is stored locally in the visitor’s browser. Article filtering and search run locally. Fonts and project images are served by the site; the font licenses are included in `public/fonts/`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Hosting
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
-# adisr21
+The canonical domain is configured as `https://adisr.xyz` in `astro.config.mjs`. `.openai/hosting.json` identifies the separate Sites preview deployment. Publishing that preview does not change the custom domain’s DNS or existing hosting.
