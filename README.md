@@ -40,7 +40,3 @@ Topics are `Engineering`, `Product thinking`, and `Building in public`. Articles
 The three initial articles are **editorial drafts for review**. Drafts are visible with a label, have `noindex` metadata, and are excluded from RSS and the sitemap. Set `draft: false` when an article is ready to publish. To keep an unpublished article entirely out of the website, move it outside `src/content/blog/`.
 
 Light/dark preference is stored locally in the visitor’s browser. Article filtering and search run locally. Fonts and project images are served by the site; the font licenses are included in `public/fonts/`.
-
-## Hosting
-
-The canonical domain is configured as `https://adisr.xyz` in `astro.config.mjs`. `.openai/hosting.json` identifies the separate Sites preview deployment. Publishing that preview does not change the custom domain’s DNS or existing hosting.
