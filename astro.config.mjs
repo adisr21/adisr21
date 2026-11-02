@@ -15,6 +15,7 @@ const draftPaths = readdirSync(blogDirectory)
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://adisr.xyz',
+	redirects: { '/work/optik-siliwangi': '/work/optical-management-system/' },
 	integrations: [mdx(), sitemap({ filter: (page) => !draftPaths.includes(new URL(page).pathname.replace(/\/$/, '')) })],
 	fonts: [
 		{
