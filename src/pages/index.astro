@@ -49,7 +49,7 @@ const posts = (await getCollection('blog')).sort((a,b)=>b.data.pubDate.valueOf()
   <div class="article-grid">{posts.map((post,index)=><ArticleCard post={post} index={index}/>)}</div>
  </div></section>
  <section class="container section about-strip" aria-labelledby="about-title"><div><div class="eyebrow"><span class="number">03</span> The person behind the pixels</div><h2 id="about-title">Engineer by practice.<br/><span>Curious by nature.</span></h2></div><div class="about-strip-copy"><p>I care about how software works, how it feels, and how it fits into someone’s day. This is where I connect those dots through projects and writing.</p><a href="/about/" class="text-link">A little more about me <Icon name="arrow-up-right" size={16}/></a></div></section>
- <section class="container contact-section" aria-labelledby="contact-title"><div><div class="eyebrow">Have something in mind?</div><h2 id="contact-title">Good things start<br/>with a conversation<span>.</span></h2></div><a href={PROFILE.github} class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Connect with Adi on GitHub"><Icon name="arrow-up-right" size={45}/></a><div class="contact-bottom"><p>A project, an idea, or a shared curiosity. Let’s connect.</p><a href={PROFILE.github} target="_blank" rel="noopener noreferrer">Find me on GitHub <Icon name="arrow-up-right" size={14}/></a></div></section>
+ <section class="container contact-section" aria-labelledby="contact-title"><div><div class="eyebrow">Have something in mind?</div><h2 id="contact-title">Good things start<br/>with a conversation<span>.</span></h2></div><a href={PROFILE.whatsapp} class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="Chat with Adi on WhatsApp"><Icon name="arrow-up-right" size={45}/></a><div class="contact-bottom"><p>A project, an idea, or a shared curiosity. Let’s connect.</p><a href={PROFILE.whatsapp} class="button whatsapp-cta" target="_blank" rel="noopener noreferrer"><Icon name="message" size={17}/> Chat on WhatsApp <Icon name="arrow-up-right" size={14}/></a></div></section>
 </main>
 <Footer/>
 </body></html>
@@ -64,4 +64,6 @@ const posts = (await getCollection('blog')).sort((a,b)=>b.data.pubDate.valueOf()
  @media(max-width:650px){.order-project{grid-template-columns:1fr}.order-project .project-visual{order:0}.order-project .browser-frame{margin:25px -50px 0 20px;transform:rotate(-3deg)}.order-project:hover .browser-frame{transform:rotate(-1deg) translateY(-5px)}}
 .optical-project .project-copy h3{font-size:clamp(28px,3.3vw,44px);padding-right:34px}.optical-project .project-copy h3>span{right:0}.optical-project .project-copy p{max-width:290px}
  @media(max-width:650px){.optical-project .project-copy h3{font-size:36px}}
+.contact-bottom{align-items:center}.contact-bottom .whatsapp-cta{font-size:12px;min-height:44px}.contact-bottom .whatsapp-cta:hover{color:#fff}
+ @media(max-width:650px){.contact-bottom{align-items:flex-start}}
 </style>

@@ -16,7 +16,7 @@ Build the static website with `npm run build`. Output is written to `dist/`.
 
 ## Content and identity
 
-- `src/consts.ts`: site identity, description, and GitHub contact link.
+- `src/consts.ts`: site identity, description, GitHub profile, and WhatsApp contact CTA.
 - `src/pages/index.astro`: homepage and portfolio project cards.
 - `src/pages/work/optical-management-system.astro`: Optical Management System case study, focused on process clarity, accountability, and continuity across the full operation.
 - `src/pages/work/order-system.astro`: wholesale spare-parts ordering case study, using the supplied Libra Jaya screenshots and verified application features.
