@@ -3,7 +3,7 @@ title: 'Good software considers the unhappy path'
 description: 'The small decisions that make an interface useful when things don’t go to plan.'
 pubDate: '2026-11-02'
 category: 'Engineering'
-draft: true
+draft: false
 ---
 A booking form is easy to describe when everything works: choose a time, enter your details, and submit. The more useful design question is what happens when one of those steps fails.
 

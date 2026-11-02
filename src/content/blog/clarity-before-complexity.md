@@ -3,7 +3,7 @@ title: 'Clarity is a product feature'
 description: 'Why naming, status, and a well-chosen next step can matter as much as another feature.'
 pubDate: '2026-11-01'
 category: 'Product thinking'
-draft: true
+draft: false
 ---
 A dashboard can be full of accurate numbers and still leave its user unsure what to do. Accuracy answers whether the data is correct. Clarity answers whether the data is useful in context.
 

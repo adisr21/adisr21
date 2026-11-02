@@ -3,7 +3,7 @@ title: 'Show the thinking, not just the screen'
 description: 'A useful project story connects the problem, the trade-offs, and the finished experience.'
 pubDate: '2026-10-31'
 category: 'Building in public'
-draft: true
+draft: false
 ---
 A screenshot shows what a product looks like. It rarely explains why it looks that way, what constraints shaped it, or which decisions made it useful.
 
