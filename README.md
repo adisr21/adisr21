@@ -4,9 +4,9 @@
 
 I build web applications that make business processes clear, accountable, and easier to operate. My work connects user interfaces, backend rules, and relational data so teams can follow a complete process, understand who owns each step, and continue the work across handoffs.
 
-This repository brings together my portfolio and engineering journal at **[adisr.xyz](https://adisr.xyz/)**, with case studies and writing in English and Bahasa Indonesia.
+This repository brings together my portfolio and engineering journal at **[adisr21.xyz](https://adisr21.xyz/)**, with case studies and writing in English and Bahasa Indonesia.
 
-[Portfolio](https://adisr.xyz/#work) · [Journal](https://adisr.xyz/blog/) · [Bahasa Indonesia](https://adisr.xyz/id/) · [GitHub](https://github.com/adisr21) · [Contact via WhatsApp](https://wa.me/628122012107)
+[Portfolio](https://adisr21.xyz/#work) · [Journal](https://adisr21.xyz/blog/) · [Bahasa Indonesia](https://adisr21.xyz/id/) · [GitHub](https://github.com/adisr21) · [Contact via WhatsApp](https://wa.me/628122012107)
 
 ## Engineering focus
 
@@ -17,7 +17,7 @@ This repository brings together my portfolio and engineering journal at **[adisr
 
 ## Selected projects
 
-### [Optical Management System](https://adisr.xyz/work/optical-management-system/)
+### [Optical Management System](https://adisr21.xyz/work/optical-management-system/)
 
 An operational platform connecting examination bookings, customer records, prescriptions, sales, payments, inventory, lens fulfillment, and collection.
 
@@ -27,7 +27,7 @@ The system carries the rules and context through the whole process. Explicit sta
 
 **Business focus:** process clarity, accountability, and operational continuity.
 
-### [Order System](https://adisr.xyz/work/order-system/)
+### [Order System](https://adisr21.xyz/work/order-system/)
 
 A wholesale ordering platform for phone spare parts, built around product discovery and purchasing across many related models and variants.
 
@@ -57,11 +57,11 @@ I review the experience through both successful and interrupted flows. The aim i
 
 My journal explores software engineering, product decisions, and the reasoning behind the work:
 
-- [Good software considers the unhappy path](https://adisr.xyz/blog/designing-for-the-unhappy-path/) — designing useful feedback and recovery when an interaction fails.
-- [Clarity is a product feature](https://adisr.xyz/blog/clarity-before-complexity/) — making names, status, scope, and next steps easier to understand.
-- [Show the thinking, not just the screen](https://adisr.xyz/blog/a-portfolio-that-explains-the-work/) — connecting a project’s problem, decisions, and evidence.
+- [Good software considers the unhappy path](https://adisr21.xyz/blog/designing-for-the-unhappy-path/) — designing useful feedback and recovery when an interaction fails.
+- [Clarity is a product feature](https://adisr21.xyz/blog/clarity-before-complexity/) — making names, status, scope, and next steps easier to understand.
+- [Show the thinking, not just the screen](https://adisr21.xyz/blog/a-portfolio-that-explains-the-work/) — connecting a project’s problem, decisions, and evidence.
 
-Read the [English journal](https://adisr.xyz/blog/) or [jurnal Bahasa Indonesia](https://adisr.xyz/id/blog/). RSS is available in [English](https://adisr.xyz/rss.xml) and [Bahasa Indonesia](https://adisr.xyz/id/rss.xml).
+Read the [English journal](https://adisr21.xyz/blog/) or [jurnal Bahasa Indonesia](https://adisr21.xyz/id/blog/). RSS is available in [English](https://adisr21.xyz/rss.xml) and [Bahasa Indonesia](https://adisr21.xyz/id/rss.xml).
 
 ## About this repository
 
@@ -169,7 +169,7 @@ In **Cloudflare → Workers & Pages → your Worker → Settings → Build**, co
 | Deploy command | `npx wrangler deploy` |
 | Node version | `24`, set by `.node-version` |
 
-The Worker name in `wrangler.jsonc` is `adisr21`; it must match the existing Worker name in Cloudflare. Set any dashboard `NODE_VERSION` override to `24` as well. Attach `adisr.xyz` to this Worker under **Settings → Domains & Routes**, matching `site` in `astro.config.mjs`.
+The Worker name in `wrangler.jsonc` is `adisr21`; it must match the existing Worker name in Cloudflare. Set any dashboard `NODE_VERSION` override to `24` as well. Attach `adisr21.xyz` to this Worker under **Settings → Domains & Routes**, matching `site` in `astro.config.mjs`.
 
 For deployment from a local checkout, authenticate Wrangler with the intended Cloudflare account and run:
 
