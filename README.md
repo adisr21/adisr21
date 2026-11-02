@@ -14,6 +14,28 @@ npm run astro -- dev stop
 
 Build the static website with `npm run build`. Output is written to `dist/`.
 
+## Deploy to Cloudflare Workers
+
+The site is fully prerendered by Astro. `wrangler.jsonc` deploys `dist/` as Worker Static Assets, including both English and Indonesian pages. No server-side Worker entry point or Astro Cloudflare adapter is required. HTML routes use trailing slashes to match the site's canonical URLs; missing pages return 404.
+
+In **Cloudflare → Workers & Pages → your Worker → Settings → Build**, connect this repository and use:
+
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| Root directory | Repository root (`/`) |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Node version | `24` (set by `.node-version`) |
+
+The Worker name in `wrangler.jsonc` is `adisr21`; it must match the existing Worker name in Cloudflare. If the dashboard has a `NODE_VERSION` environment override, set it to `24` too. Keep `adisr.xyz` attached to this Worker under **Settings → Domains & Routes**, matching `site` in `astro.config.mjs`.
+
+For a local deployment, authenticate Wrangler with the intended Cloudflare account and run `npm run deploy`. This command builds before deploying. To validate configuration without publishing, run `npm run build` and `npx wrangler deploy --dry-run`.
+
+A log containing `GitHub Pages: github-pages` and `jekyll` comes from GitHub Pages, rather than this Cloudflare deployment. If GitHub still runs that unused pipeline, disable GitHub Pages in the repository's Pages settings. Cloudflare should build Astro and deploy through Wrangler.
+
+Deployment references: [Astro on Cloudflare Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/) and [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
+
 ## Content and identity
 
 - `src/consts.ts`: site identity, description, GitHub profile, and WhatsApp contact CTA.
