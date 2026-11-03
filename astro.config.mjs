@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import { readdirSync, readFileSync } from 'node:fs';
+import { copyFile } from 'node:fs/promises';
 
 // Connect real translations in the sitemap and keep editorial drafts out.
 const blogDirectory = new URL('./src/content/blog/', import.meta.url);
@@ -33,7 +34,14 @@ export default defineConfig({
 	integrations: [mdx(), sitemap({
       filter: (page) => !draftPaths.includes(`${new URL(page).pathname.replace(/\/$/, '')}/`),
       serialize: (item) => ({ ...item, links: languageLinks.find(links => links.some(link => link.url === item.url)) }),
-    })],
+    }), {
+      name: 'sitemap-pages',
+      hooks: {
+        'astro:build:done': async ({ dir }) => {
+          await copyFile(new URL('sitemap-0.xml', dir), new URL('sitemap.xml', dir));
+        },
+      },
+    }],
 	fonts: [
 		{
 			provider: fontProviders.local(),
