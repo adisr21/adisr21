@@ -20,15 +20,15 @@ const articleRecords = readdirSync(blogDirectory, { recursive: true })
 const draftPaths = articleRecords.filter(post => post.draft).map(post => post.path);
 const translatedPagePaths = ['/', '/about/', '/blog/', '/work/optical-management-system/', '/work/order-system/'];
 const languageLinks = [
-  ...translatedPagePaths.map(path => [{ lang: 'en', url: `https://adisr.xyz${path}` }, { lang: 'id', url: `https://adisr.xyz/id${path}` }]),
+  ...translatedPagePaths.map(path => [{ lang: 'en', url: `https://adisr21.xyz${path}` }, { lang: 'id', url: `https://adisr21.xyz/id${path}` }]),
   ...[...new Set(articleRecords.map(post => post.key))].map(key => articleRecords
     .filter(post => post.key === key && !post.draft)
-    .map(post => ({ lang: post.lang, url: `https://adisr.xyz${post.path}` }))),
+    .map(post => ({ lang: post.lang, url: `https://adisr21.xyz${post.path}` }))),
 ];
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://adisr.xyz',
+	site: 'https://adisr21.xyz',
 	i18n: { locales: ['en', 'id'], defaultLocale: 'en', routing: { prefixDefaultLocale: false } },
 	redirects: { '/work/optik-siliwangi': '/work/optical-management-system/' },
 	integrations: [mdx(), sitemap({

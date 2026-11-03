@@ -11,7 +11,7 @@ export function getLocale(pathname: string): Locale {
 }
 
 export function localizePath(path: string, locale: Locale): string {
-    const url = new URL(path, 'https://adisr.xyz');
+    const url = new URL(path, 'https://adisr21.xyz');
     const bare = url.pathname.replace(/^\/id(?=\/|$)/, '') || '/';
     const pathname = locale === 'id' ? `/id${bare}` : bare;
     return `${pathname}${url.search}${url.hash}`;

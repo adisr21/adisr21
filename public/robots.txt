@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://adisr.xyz/sitemap.xml
+Sitemap: https://adisr21.xyz/sitemap.xml

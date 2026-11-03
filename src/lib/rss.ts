@@ -9,7 +9,7 @@ export async function localizedFeed(site: URL | undefined, lang: Locale) {
   return rss({
     title: t(SITE_TITLE),
     description: t(SITE_DESCRIPTION),
-    site: site ?? 'https://adisr.xyz',
+    site: site ?? 'https://adisr21.xyz',
     customData: `<language>${lang}</language>`,
     items: posts.map(post => ({
       title: post.data.title,
