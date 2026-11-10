@@ -32,13 +32,15 @@ export default defineConfig({
 	i18n: { locales: ['en', 'id'], defaultLocale: 'en', routing: { prefixDefaultLocale: false } },
 	redirects: { '/work/optik-siliwangi': '/work/optical-management-system/' },
 	integrations: [mdx(), sitemap({
-      filter: (page) => !draftPaths.includes(`${new URL(page).pathname.replace(/\/$/, '')}/`),
+      filter: (page) => !/\/404(?:\/|\.html)?$/.test(new URL(page).pathname) && !draftPaths.includes(`${new URL(page).pathname.replace(/\/$/, '')}/`),
       serialize: (item) => ({ ...item, links: languageLinks.find(links => links.some(link => link.url === item.url)) }),
     }), {
       name: 'sitemap-pages',
       hooks: {
         'astro:build:done': async ({ dir }) => {
           await copyFile(new URL('sitemap-0.xml', dir), new URL('sitemap.xml', dir));
+          // Cloudflare selects the nearest 404.html for missing localized routes.
+          await copyFile(new URL('id/404/index.html', dir), new URL('id/404.html', dir));
         },
       },
     }],

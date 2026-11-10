@@ -1,5 +1,12 @@
 // Indonesian translations. The English source copy is the translation key.
 export const messages = {
+  "Page not found — adisr.": "Halaman tidak ditemukan — adisr.",
+  "This page could not be found. Return home or browse the journal.": "Halaman ini tidak ditemukan. Kembali ke beranda atau jelajahi jurnal.",
+  "Error 404": "Kesalahan 404",
+  "Page not found.": "Halaman tidak ditemukan.",
+  "The link may be outdated, or the address may have been mistyped. You can head home or find something to read in the journal.": "Tautan mungkin sudah tidak berlaku, atau alamatnya salah ketik. Anda dapat kembali ke beranda atau membaca tulisan di jurnal.",
+  "Back to home": "Kembali ke beranda",
+  "Browse the journal": "Jelajahi jurnal",
   "Recent notes from the work.": "Catatan terbaru dari proses berkarya.",
   "Notes on software, products, and building.": "Catatan tentang software, produk, dan proses berkarya.",
   "Software engineer & curious builder": "Software engineer yang gemar berkarya",

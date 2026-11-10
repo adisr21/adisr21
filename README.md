@@ -177,7 +177,7 @@ For deployment from a local checkout, authenticate Wrangler with the intended Cl
 npm run deploy
 ```
 
-This command builds the website before publishing. The Worker serves `dist/` directly without an SSR entry point. HTML routes use trailing slashes; missing pages return 404.
+This command builds the website before publishing. The Worker serves `dist/` directly without an SSR entry point. HTML routes use trailing slashes. Missing pages return HTTP 404 with the custom page from `src/pages/404.astro`; `/id/...` requests use the Indonesian version. The build copies the localized page to `dist/id/404.html` so Cloudflare can select the nearest error page. Both versions are marked `noindex` and excluded from the sitemap.
 
 References: [Astro on Cloudflare Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/) · [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
 
